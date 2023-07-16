@@ -35,16 +35,25 @@ export default function PostWidget({
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    try {
+      const response = await axios.patch(
+        `http://localhost:3001/posts/${postId}/like`,
+        JSON.stringify({ userId: loggedInUserId }),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const updatedPost = response.data;
+      dispatch(setPost({ post: updatedPost }));
+    } catch (error) {
+      // Handle the error
+      console.error("Error occurred while patching like:", error);
+      // Perform any necessary error handling or display error messages
+    }
   };
 
   return (

@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -50,15 +51,21 @@ export default function PostBox({ picturePath }) {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`http://localhost:3001/posts`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-    const posts = await response.json();
-    dispatch(setPosts({ posts }));
-    setImage(null);
-    setPost("");
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/posts`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const posts = response.data;
+      dispatch(setPosts({ posts }));
+      setImage(null);
+      setPost("");
+    } catch (err) {
+      console.log("Error creating post:", err);
+    }
   };
 
   return (
