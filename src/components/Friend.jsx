@@ -1,3 +1,4 @@
+import axios from "axios";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,18 +23,22 @@ export default function Friend({ friendId, name, subtitle }) {
   const isFriend = friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/users/${_id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    try {
+      const response = await axios.patch(
+        `http://localhost:3001/users/${_id}/${friendId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = response.data;
+      dispatch(setFriends({ friends: data }));
+    } catch (err) {
+      console.log("Error patching friend:", err);
+    }
   };
 
   return (

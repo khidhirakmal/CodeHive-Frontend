@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Box, Typography, useTheme } from "@mui/material";
 import Friend from "./Friend";
 import Container from "./tools/Container";
@@ -12,20 +13,23 @@ export default function FriendsList({ userId }) {
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = async () => {
-    const response = await fetch(
-      `http://localhost:3001/users/${userId}/friends`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/users/${userId}/friends`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const data = response.data;
+      dispatch(setFriends({ friends: data }));
+    } catch (err) {
+      console.log("Error retrieving friends:", err);
+    }
   };
 
   useEffect(() => {
     getFriends();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>

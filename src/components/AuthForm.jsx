@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import {
   Box,
@@ -63,37 +64,42 @@ export default function AuthForm() {
     }
     formData.append("picturePath", values.picture.name);
 
-    const savedUserResponse = await fetch(
-      "http://localhost:3001/auth/register",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+    try {
+      const savedUserResponse = await axios.post(
+        "http://localhost:3001/auth/register",
+        formData
+      );
+      const savedUser = savedUserResponse.data;
+      onSubmitProps.resetForm();
 
-    if (savedUser) {
-      setPageType("login");
+      if (savedUser) {
+        setPageType("login");
+      }
+    } catch (err) {
+      console.log("Error registering user:", err);
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
-    onSubmitProps.resetForm();
-    if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
+    try {
+      const loggedInResponse = await axios.post(
+        "http://localhost:3001/auth/login",
+        values
       );
-      navigate("/home");
+      const loggedIn = loggedInResponse.data;
+      onSubmitProps.resetForm();
+
+      if (loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token,
+          })
+        );
+        navigate("/home");
+      }
+    } catch (err) {
+      console.log("Error logging in:", err);
     }
   };
 

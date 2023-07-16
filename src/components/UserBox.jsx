@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   ManageAccountsOutlined,
   EditOutlined,
@@ -27,20 +28,28 @@ export default function UserBox(userId) {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    setUser(data);
+    try {
+      const response = await axios.get(`http://localhost:3001/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const data = response.data;
+      setUser(data);
+    } catch (err) {
+      console.log('Error occurred while fetching user:', err);
+    }
   };
 
   useEffect(() => {
-    getUser();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!user) {
+      getUser();
+    }
+  }, [user]);
 
   if (!user) {
-    return null;
+    return <div>Getting user...</div>;
   }
 
   const {
