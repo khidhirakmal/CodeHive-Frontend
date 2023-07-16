@@ -15,8 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 /* The UserBox component renders user information and social profiles. It 
 fetches user data based on the provided userId and displays the user's 
-avatar, name, friends count, location, occupation, profile views, and 
-impressions.*/
+avatar, name, friends count, location and occupation.*/
 
 export default function UserBox(userId) {
   const [user, setUser] = useState(null);
@@ -57,8 +56,6 @@ export default function UserBox(userId) {
     lastName,
     location,
     occupation,
-    viewedProfile,
-    impressions,
     friends,
   } = user;
 
@@ -104,24 +101,6 @@ export default function UserBox(userId) {
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{occupation}</Typography>
         </Box>
-      </Box>
-
-      <Divider />
-
-      {/* THIRD ROW */}
-      <Box p="1rem 0">
-        <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
-          <Typography color={main} fontWeight="500">
-            {viewedProfile}
-          </Typography>
-        </FlexBetween>
-        <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
-          <Typography color={main} fontWeight="500">
-            {impressions}
-          </Typography>
-        </FlexBetween>
       </Box>
 
       <Divider />
