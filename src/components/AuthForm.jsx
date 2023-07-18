@@ -16,12 +16,10 @@ import { setLogin } from "../stores/authSlice";
 
 const registerSchema = yup.object().shape({
   name: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  password: yup.string().required("required"),
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
-  picture: yup.string().required("required"),
+  email: yup.string().email("invalid email").required("required"),
+  password: yup.string().required("required"),
 });
 
 const loginSchema = yup.object().shape({
@@ -31,7 +29,6 @@ const loginSchema = yup.object().shape({
 
 const initialValuesRegister = {
   name: "",
-  lastName: "",
   email: "",
   password: "",
   location: "",
@@ -55,23 +52,18 @@ export default function AuthForm() {
   const nonMobile = useMediaQuery("(min-width:600px)");
   const loginPage = pageType === "login";
   const registerPage = pageType === "register";
+  
 
   const register = async (values, onSubmitProps) => {
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-    formData.append("picturePath", values.picture.name);
-
     try {
       const savedUserResponse = await axios.post(
         "http://localhost:3000/api/users/register",
-        formData
+        values
       );
       const savedUser = savedUserResponse.data;
-      console.log(savedUser);
+      console.log("Registration Data:", savedUser);
       onSubmitProps.resetForm();
-
+  
       if (savedUser) {
         setPageType("login");
       }
@@ -141,26 +133,16 @@ export default function AuthForm() {
                   label="Name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  // value={values.name}
+                  value={values.name}
                   name="name"
                   error={Boolean(touched.name) && Boolean(errors.name)}
                   helperText={touched.name && errors.name}
                   sx={{ gridColumn: "span 4" }}
                 />
-                {/* <TextField
-                  label="Last Name"
-                  onBlur={handleBlur}
-                  // onChange={handleChange}
-                  value={values.lastName}
-                  name="lastName"
-                  error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-                  helperText={touched.lastName && errors.lastName}
-                  sx={{ gridColumn: "span 2" }}
-                /> */}
                 <TextField
                   label="Location"
                   onBlur={handleBlur}
-                  // onChange={handleChange}
+                  onChange={handleChange}
                   value={values.location}
                   name="location"
                   error={Boolean(touched.location) && Boolean(errors.location)}
@@ -170,7 +152,7 @@ export default function AuthForm() {
                 <TextField
                   label="Occupation"
                   onBlur={handleBlur}
-                  // onChange={handleChange}
+                  onChange={handleChange}
                   value={values.occupation}
                   name="occupation"
                   error={
