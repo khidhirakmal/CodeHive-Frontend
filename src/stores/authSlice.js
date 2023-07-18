@@ -19,6 +19,8 @@ export const authSlice = createSlice({
       // setLogin: (current state, action object dispatched to trigger the reducer)
       state.user = action.payload.user; // updates the user state with the payload value
       state.token = action.payload.token; // updates the token state with the payload value
+      // console.log("setLogin User:", state.user);
+      // console.log("setLogin Token:", state.token);
     },
     setLogout: (state) => {
       // logging out does not require any specific data, therefore payload is not required. thus action is not required.

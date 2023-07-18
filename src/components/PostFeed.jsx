@@ -11,7 +11,7 @@ export default function PostFeed({ userId, isProfile = false }) {
 
   const getPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/posts", {
+      const response = await axios.get("http://localhost:3000/posts", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
@@ -24,7 +24,7 @@ export default function PostFeed({ userId, isProfile = false }) {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/posts/${userId}/posts`,
+        `http://localhost:3000/posts/${userId}/posts`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
