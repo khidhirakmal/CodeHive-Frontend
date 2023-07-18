@@ -8,14 +8,14 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup"; // JS schema validation library for form validation
+import { Formik, Form } from "formik";
+import * as yup from "yup"; // JS schema validation library for Form validation
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin } from "state";
+import { setLogin } from "../stores/authSlice";
 
 const registerSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
+  name: yup.string().required("required"),
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
@@ -30,13 +30,12 @@ const loginSchema = yup.object().shape({
 });
 
 const initialValuesRegister = {
-  firstName: "",
+  name: "",
   lastName: "",
   email: "",
   password: "",
   location: "",
   occupation: "",
-  picture: "",
 };
 
 const initialValuesLogin = {
@@ -45,7 +44,7 @@ const initialValuesLogin = {
 };
 
 /* The AuthForm component handles user authentication, including login and 
-registration. It utilizes Formik for form management and Yup for form validation
+registration. It utilizes Formik for Form management and Yup for Form validation
 with defined schemas. It communicates with the server for authentication processes.*/
 
 export default function AuthForm() {
@@ -66,10 +65,11 @@ export default function AuthForm() {
 
     try {
       const savedUserResponse = await axios.post(
-        "http://localhost:3001/auth/register",
+        "http://localhost:3000/api/users/register",
         formData
       );
       const savedUser = savedUserResponse.data;
+      console.log(savedUser);
       onSubmitProps.resetForm();
 
       if (savedUser) {
@@ -83,13 +83,16 @@ export default function AuthForm() {
   const login = async (values, onSubmitProps) => {
     try {
       const loggedInResponse = await axios.post(
-        "http://localhost:3001/auth/login",
+        "http://localhost:3000/api/users/login",
         values
       );
       const loggedIn = loggedInResponse.data;
+      console.log("Payload Data:", loggedIn);
       onSubmitProps.resetForm();
 
       if (loggedIn) {
+        console.log("Logged in user:", loggedIn.user);
+        console.log("User token:", loggedIn.token);
         dispatch(
           setLogin({
             user: loggedIn.user,
@@ -106,6 +109,7 @@ export default function AuthForm() {
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (loginPage) await login(values, onSubmitProps);
     if (registerPage) await register(values, onSubmitProps);
+    console.log("handleFormSubmit values:", values);
   };
 
   return (
@@ -123,7 +127,7 @@ export default function AuthForm() {
         handleSubmit,
         resetForm,
       }) => (
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Box
             display="grid"
             gap="30px"
@@ -134,31 +138,29 @@ export default function AuthForm() {
             {registerPage && (
               <>
                 <TextField
-                  label="First Name"
+                  label="Name"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.firstName}
-                  name="firstName"
-                  error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName)
-                  }
-                  helperText={touched.firstName && errors.firstName}
-                  sx={{ gridColumn: "span 2" }}
+                  // value={values.name}
+                  name="name"
+                  error={Boolean(touched.name) && Boolean(errors.name)}
+                  helperText={touched.name && errors.name}
+                  sx={{ gridColumn: "span 4" }}
                 />
-                <TextField
+                {/* <TextField
                   label="Last Name"
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   value={values.lastName}
                   name="lastName"
                   error={Boolean(touched.lastName) && Boolean(errors.lastName)}
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
-                />
+                /> */}
                 <TextField
                   label="Location"
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   value={values.location}
                   name="location"
                   error={Boolean(touched.location) && Boolean(errors.location)}
@@ -168,7 +170,7 @@ export default function AuthForm() {
                 <TextField
                   label="Occupation"
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   value={values.occupation}
                   name="occupation"
                   error={
@@ -207,6 +209,7 @@ export default function AuthForm() {
           <Box>
             <Button
               fullWidth
+              onClick={() => {}}
               type="submit"
               sx={{
                 m: "2rem 0",
@@ -238,7 +241,7 @@ export default function AuthForm() {
                 : "Already have an account? Log in here."}
             </Typography>
           </Box>
-        </form>
+        </Form>
       )}
     </Formik>
   );

@@ -17,7 +17,8 @@ import { useNavigate } from "react-router-dom";
 fetches user data based on the provided userId and displays the user's 
 avatar, name, friends count, location and occupation.*/
 
-export default function UserBox(userId) {
+export default function UserBox({ userId }) {
+  console.log(userId);
   const [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -28,16 +29,20 @@ export default function UserBox(userId) {
 
   const getUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const response = await axios.get(
+        `http://localhost:3000/api/users/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
-  
+      );
+
       const data = response.data;
       setUser(data);
+      console.log("getUser data:", data);
     } catch (err) {
-      console.log('Error occurred while fetching user:', err);
+      console.log("Error occurred while fetching user:", err);
     }
   };
 
@@ -51,13 +56,7 @@ export default function UserBox(userId) {
     return <div>Getting user...</div>;
   }
 
-  const {
-    firstName,
-    lastName,
-    location,
-    occupation,
-    friends,
-  } = user;
+  const { name, location, occupation, friends } = user;
 
   return (
     <Container>
@@ -68,7 +67,7 @@ export default function UserBox(userId) {
         onClick={() => navigate(`/profile/${userId}`)}
       >
         <FlexBetween gap="1rem">
-          <UserAvatar username={user.username} />
+          {/* <UserAvatar username={name} /> */}
           <Box>
             <Typography
               variant="h4"
@@ -81,16 +80,14 @@ export default function UserBox(userId) {
                 },
               }}
             >
-              {firstName} {lastName}
+              {name}
             </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
+            {/* <Typography color={medium}>{friends.length} friends</Typography> */}
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
       </FlexBetween>
-
       <Divider />
-
       {/* SECOND ROW */}
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
@@ -102,9 +99,7 @@ export default function UserBox(userId) {
           <Typography color={medium}>{occupation}</Typography>
         </Box>
       </Box>
-
       <Divider />
-
       {/* FOURTH ROW */}
       <Box p="1rem 0">
         <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
@@ -113,7 +108,7 @@ export default function UserBox(userId) {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
+            <img src="./assets/github.png" alt="github" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Github
@@ -126,7 +121,7 @@ export default function UserBox(userId) {
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
+            <img src="./assets/linkedin.png" alt="linkedin" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin

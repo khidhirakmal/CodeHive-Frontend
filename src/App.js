@@ -17,6 +17,9 @@ export default function App() {
 
   const isAuth = Boolean(useSelector((state) => state.token));
 
+  // console.log("Mode:", mode);
+  // console.log("Theme:", theme);
+
   return (
     <div className="app">
       <BrowserRouter>
