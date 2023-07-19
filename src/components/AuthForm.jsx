@@ -52,19 +52,18 @@ export default function AuthForm() {
   const nonMobile = useMediaQuery("(min-width:600px)");
   const loginPage = pageType === "login";
   const registerPage = pageType === "register";
-  
 
   const register = async (values, onSubmitProps) => {
+    // console.log("FE Registration Data:", values);
     try {
       const savedUserResponse = await axios.post(
         "http://localhost:3000/api/users/register",
         values
       );
-      const savedUser = savedUserResponse.data;
-      console.log("Registration Data:", savedUser);
+      console.log("Registration successful:", values);
       onSubmitProps.resetForm();
-  
-      if (savedUser) {
+
+      if (savedUserResponse) {
         setPageType("login");
       }
     } catch (err) {
@@ -101,7 +100,7 @@ export default function AuthForm() {
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (loginPage) await login(values, onSubmitProps);
     if (registerPage) await register(values, onSubmitProps);
-    console.log("handleFormSubmit values:", values);
+    // console.log("handleFormSubmit values:", values);
   };
 
   return (

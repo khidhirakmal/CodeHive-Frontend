@@ -14,8 +14,8 @@ export default function HomePage() {
   const nonMobile = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
 
-  console.log("User ID:", _id);
-  console.log("User Picture:", picturePath);
+  // console.log("User ID:", _id);
+  // console.log("User Picture:", picturePath);
 
   return (
     <Box>

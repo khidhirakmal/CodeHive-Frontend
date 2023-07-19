@@ -30,7 +30,8 @@ import Container from "./tools/Container";
 and additional attachments. It handles form submission, stores the post 
 content and image, and triggers the dispatch of a post creation action. */
 
-export default function PostBox({ picturePath }) {
+export default function PostBox() {
+  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -68,10 +69,11 @@ export default function PostBox({ picturePath }) {
     }
   };
 
+
   return (
     <Container>
       <FlexBetween gap="1.5rem">
-        <UserAvatar image={picturePath} />
+        <UserAvatar username={_id} />
         <InputBase
           placeholder="What's on your mind..."
           onChange={(e) => setPost(e.target.value)}
