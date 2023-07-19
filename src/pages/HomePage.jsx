@@ -38,7 +38,10 @@ export default function HomePage() {
           mt={nonMobile ? undefined : "2rem"}
         >
           <PostBox picturePath={picturePath} />
-          <PostFeed userId={_id} />
+          <Box
+          mt="2rem">
+            <PostFeed userId={_id} />
+          </Box>
         </Box>
 
         {/* (RIGHT SECTION) UserProjects and FriendsList */}

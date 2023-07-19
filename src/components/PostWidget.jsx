@@ -28,8 +28,8 @@ export default function PostWidget({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
-  const likeCount = Object.keys(likes).length;
+  // const isLiked = Boolean(likes[loggedInUserId]);
+  // const likeCount = Object.keys(likes).length;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -58,13 +58,13 @@ export default function PostWidget({
   };
 
   return (
-    <Container m="2rem 0">
-      <Friend
+    <Container m="2rem 0" >
+      {/* <Friend
         friendId={postUserId}
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
-      />
+      /> */}
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
@@ -74,12 +74,12 @@ export default function PostWidget({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`http://localhost:3000/api/posts/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
-          <FlexBetween gap="0.3rem">
+          {/* <FlexBetween gap="0.3rem">
             <IconButton onClick={patchLike}>
               {isLiked ? (
                 <FavoriteOutlined sx={{ color: primary }} />
@@ -95,7 +95,7 @@ export default function PostWidget({
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
-          </FlexBetween>
+          </FlexBetween> */}
         </FlexBetween>
 
         <IconButton>

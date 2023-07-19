@@ -20,7 +20,7 @@ fetches user data based on the provided userId and displays the user's
 avatar, name, friends count, location and occupation.*/
 
 export default function UserBox({ userId }) {
-  console.log(userId);
+  console.log("userId:", userId);
   const [user, setUser] = useState(null);
   const { palette } = useTheme();
   const navigate = useNavigate();
@@ -88,7 +88,6 @@ export default function UserBox({ userId }) {
             {/* <Typography color={medium}>{friends.length} friends</Typography> */}
           </Box>
         </FlexBetween>
-        <ManageAccountsOutlined />
       </FlexBetween>
       <Divider />
       {/* SECOND ROW */}
@@ -119,7 +118,7 @@ export default function UserBox({ userId }) {
               <Typography color={medium}>Project Portfolio</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          {/* <EditOutlined sx={{ color: main }} /> */}
         </FlexBetween>
 
         <FlexBetween gap="1rem">
@@ -132,7 +131,7 @@ export default function UserBox({ userId }) {
               <Typography color={medium}>Professional Networking</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
+          {/* <EditOutlined sx={{ color: main }} /> */}
         </FlexBetween>
       </Box>
     </Container>

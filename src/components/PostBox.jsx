@@ -44,18 +44,22 @@ export default function PostBox() {
   const medium = palette.neutral.medium;
 
   const handlePost = async () => {
-    const formData = new FormData();
-    formData.append("userId", _id);
-    formData.append("description", post);
+    const payload = {
+      userId: _id,
+      description: post,
+    };
+
     if (image) {
-      formData.append("picture", image);
-      formData.append("picturePath", image.name);
+      payload.picture = image;
+      payload.picturePath = image.name;
     }
+
+    console.log("Submission Payload:", payload);
 
     try {
       const response = await axios.post(
-        `http://localhost:3001/posts`,
-        formData,
+        `http://localhost:3000/api/posts/`,
+        payload,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -64,11 +68,11 @@ export default function PostBox() {
       dispatch(setPosts({ posts }));
       setImage(null);
       setPost("");
+      console.log("Post successfully created", posts);
     } catch (err) {
       console.log("Error creating post:", err);
     }
   };
-
 
   return (
     <Container>
@@ -140,34 +144,11 @@ export default function PostBox() {
             color={mediumMain}
             sx={{ "&:hover": { cursor: "pointer", color: medium } }}
           >
-            Image
+            Upload Image
           </Typography>
         </FlexBetween>
 
-        {nonMobile ? (
-          <>
-            <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Clip</Typography>
-            </FlexBetween>
-
-            <FlexBetween gap="0.25rem">
-              <AttachFileOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Attachment</Typography>
-            </FlexBetween>
-
-            <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: mediumMain }} />
-              <Typography color={mediumMain}>Audio</Typography>
-            </FlexBetween>
-          </>
-        ) : (
-          <FlexBetween gap="0.25rem">
-            <MoreHorizOutlined sx={{ color: mediumMain }} />
-          </FlexBetween>
-        )}
-
-        {/* Button to submit post */}
+        {/* SUBMIT BUTTON */}
         <Button
           disabled={!post}
           onClick={handlePost}

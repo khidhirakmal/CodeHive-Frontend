@@ -4,7 +4,7 @@ const initialState = {
   mode: "light",
   user: null,
   token: null,
-  posts: [],
+  posts: [], // Initialize as an empty array
 };
 
 export const authSlice = createSlice({
@@ -35,13 +35,16 @@ export const authSlice = createSlice({
         console.error("You have no friends");
       }
     },
+    // Create new post //
     setPosts: (state, action) => {
-      // creating a new post
-      state.posts = action.payload.posts;
+      console.log("Created Post:", action.payload.posts);
+      state.posts = [action.payload.posts];
     },
+    // Update wall feed? //
     setPost: (state, action) => {
+      console.log("Updated Post:", action.payload.post);
       const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post_id) return action.payload.post;
+        if (post._id === action.payload.post._id) return action.payload.post;
         return post;
       });
       state.posts = updatedPosts;

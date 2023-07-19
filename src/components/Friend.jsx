@@ -25,7 +25,7 @@ export default function Friend({ friendId, name, subtitle }) {
   const patchFriend = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:3001/users/${_id}/${friendId}`,
+        `http://localhost:3000/api/users/${_id}/${friendId}`,
         {},
         {
           headers: {
