@@ -12,6 +12,8 @@ import Container from "./tools/Container";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import github from "./assets/github.png";
+import linkedin from "./assets/linkedin.png";
 
 /* The UserBox component renders user information and social profiles. It 
 fetches user data based on the provided userId and displays the user's 
@@ -56,7 +58,8 @@ export default function UserBox({ userId }) {
     return <div>Getting user...</div>;
   }
 
-  const { name, location, occupation, friends } = user;
+  const { name, location, occupation, _id, friends } = user;
+  // console.log("(UserBox) User ID:", _id)
 
   return (
     <Container>
@@ -67,7 +70,7 @@ export default function UserBox({ userId }) {
         onClick={() => navigate(`/profile/${userId}`)}
       >
         <FlexBetween gap="1rem">
-          {/* <UserAvatar username={name} /> */}
+          <UserAvatar username={_id} />
           <Box>
             <Typography
               variant="h4"
@@ -108,7 +111,7 @@ export default function UserBox({ userId }) {
 
         <FlexBetween gap="1rem" mb="0.5rem">
           <FlexBetween gap="1rem">
-            <img src="./assets/github.png" alt="github" />
+            <img src={github} alt="github" width="60px" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Github
@@ -121,7 +124,7 @@ export default function UserBox({ userId }) {
 
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="./assets/linkedin.png" alt="linkedin" />
+            <img src={linkedin} alt="linkedin" width="60px" />
             <Box>
               <Typography color={main} fontWeight="500">
                 Linkedin
