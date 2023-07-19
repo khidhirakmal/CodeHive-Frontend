@@ -68,6 +68,7 @@ export default function AuthForm() {
       }
     } catch (err) {
       console.log("Error registering user:", err);
+      alert("Email already registered. Please use a different email address.");
     }
   };
 
@@ -94,6 +95,8 @@ export default function AuthForm() {
       }
     } catch (err) {
       console.log("Error logging in:", err);
+      alert("Login failed, please check login details.");
+      onSubmitProps.resetForm();
     }
   };
 

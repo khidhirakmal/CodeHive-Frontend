@@ -15,7 +15,7 @@ export default function FriendsList({ userId }) {
   const getFriends = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/users/${userId}/friends`,
+        `http://localhost:3000/api/users/${userId}/friends`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -43,15 +43,15 @@ export default function FriendsList({ userId }) {
         Friend List
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
+        {/* {friends.map((friend) => (
           <Friend
             key={friend._id}
             friendId={friend._id}
-            name={`${friend.firstName} ${friend.lastName}`}
+            name={`${friend.name}`}
             subtitle={friend.occupation}
             userPicturePath={friend.picturePath}
           />
-        ))}
+        ))} */}
       </Box>
     </Container>
   );

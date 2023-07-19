@@ -11,7 +11,7 @@ export default function PostFeed({ userId, isProfile = false }) {
 
   const getPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/posts", {
+      const response = await axios.get("http://localhost:3000/api/posts", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
@@ -24,7 +24,7 @@ export default function PostFeed({ userId, isProfile = false }) {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/posts/${userId}/posts`,
+        `http://localhost:3000/api/posts/${userId}/posts`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -53,32 +53,33 @@ export default function PostFeed({ userId, isProfile = false }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log("Posts:", posts);
+
   return (
     <>
       {posts.map(
         ({
           _id,
           userId,
-          firstName,
-          lastName,
+          name,
           description,
           location,
           picturePath,
           userPicturePath,
-          likes,
-          comments,
+          // likes,
+          // comments,
         }) => (
           <PostWidget
             key={_id}
             postId={_id}
             postUserId={userId}
-            name={`${firstName} ${lastName}`}
+            name={name}
             description={description}
             location={location}
             picturePath={picturePath}
             userPicturePath={userPicturePath}
-            likes={likes}
-            comments={comments}
+            // likes={likes}
+            // comments={comments}
           />
         )
       )}
