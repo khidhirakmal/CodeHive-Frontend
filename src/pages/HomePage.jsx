@@ -40,7 +40,8 @@ export default function HomePage() {
           <PostBox picturePath={picturePath} />
           <Box
           mt="2rem">
-            <PostFeed userId={_id} />
+            {/* PostFeed having issues */}
+            <PostFeed userId={_id} /> 
           </Box>
         </Box>
 

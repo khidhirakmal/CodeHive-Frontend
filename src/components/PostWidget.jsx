@@ -1,4 +1,7 @@
 import axios from "axios";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPost } from "../stores/authSlice";
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
@@ -7,11 +10,7 @@ import {
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "./tools/FlexBetween";
-import Friend from "./Friend";
 import Container from "./tools/Container";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../stores/authSlice";
 
 export default function PostWidget({
   postId,
@@ -28,11 +27,11 @@ export default function PostWidget({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
-  // const isLiked = Boolean(likes[loggedInUserId]);
-  // const likeCount = Object.keys(likes).length;
+  const isLiked = likes && likes[loggedInUserId];
+  const likeCount = likes ? Object.keys(likes).length : 0;
 
   const { palette } = useTheme();
-  const main = palette.neutral.main;
+  const main = palette.text.primary;
   const primary = palette.primary.main;
 
   const patchLike = async () => {
@@ -51,20 +50,12 @@ export default function PostWidget({
       const updatedPost = response.data;
       dispatch(setPost({ post: updatedPost }));
     } catch (error) {
-      // Handle the error
       console.error("Error occurred while patching like:", error);
-      // Perform any necessary error handling or display error messages
     }
   };
 
   return (
-    <Container m="2rem 0" >
-      {/* <Friend
-        friendId={postUserId}
-        name={name}
-        subtitle={location}
-        userPicturePath={userPicturePath}
-      /> */}
+    <Container m="2rem 0">
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
@@ -79,7 +70,7 @@ export default function PostWidget({
       )}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
-          {/* <FlexBetween gap="0.3rem">
+          <FlexBetween gap="0.3rem">
             <IconButton onClick={patchLike}>
               {isLiked ? (
                 <FavoriteOutlined sx={{ color: primary }} />
@@ -94,8 +85,8 @@ export default function PostWidget({
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
-          </FlexBetween> */}
+            <Typography>{comments ? comments.length : 0}</Typography>
+          </FlexBetween>
         </FlexBetween>
 
         <IconButton>
@@ -104,14 +95,15 @@ export default function PostWidget({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
+          {comments &&
+            comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment}
+                </Typography>
+              </Box>
+            ))}
           <Divider />
         </Box>
       )}

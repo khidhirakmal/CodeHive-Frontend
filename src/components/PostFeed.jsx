@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../stores/authSlice";
+import Container from "./tools/Container";
 import PostWidget from "./PostWidget";
 
 export default function PostFeed({ userId, isProfile = false }) {
@@ -56,33 +57,38 @@ export default function PostFeed({ userId, isProfile = false }) {
   console.log("Posts:", posts);
 
   return (
-    <>
-      {posts.map(
-        ({
-          _id,
-          userId,
-          name,
-          description,
-          location,
-          picturePath,
-          userPicturePath,
-          // likes,
-          // comments,
-        }) => (
-          <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={name}
-            description={description}
-            location={location}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            // likes={likes}
-            // comments={comments}
-          />
-        )
-      )}
-    </>
+    <Container>
+      {Array.isArray(posts[0]) &&
+        posts[0].map(
+          ({
+            _id,
+            userId,
+            name,
+            description,
+            location,
+            picturePath,
+            userPicturePath,
+            likes,
+            comments,
+          }) => {
+            console.log("Description:", description);
+
+            return (
+              <PostWidget
+                key={_id}
+                postId={_id}
+                postUserId={userId}
+                name={name}
+                description={description}
+                location={location}
+                picturePath={picturePath}
+                userPicturePath={userPicturePath}
+                likes={likes}
+                comments={comments}
+              />
+            );
+          }
+        )}
+    </Container>
   );
 }
