@@ -35,16 +35,25 @@ export const authSlice = createSlice({
         console.error("You have no friends");
       }
     },
-    // Create new post //
-    setPosts: (state, action) => {
-      console.log("Created Post:", action.payload.posts);
-      state.posts = [action.payload.posts];
+
+    getUsers: (state, action) => {
+      state.users = action.payload.users;
     },
-    // Update wall feed? //
-    setPost: (state, action) => {
-      console.log("Updated Post:", action.payload.post);
+
+    setAllPosts: (state, action) => {
+      state.posts = [action.payload.posts];
+      console.log("Setting All Posts:", state.posts);
+    },
+
+    addPost: (state, action) => {
+      console.log("Adding Post:", action.payload.post);
+      state.posts.push(action.payload.post);
+    },
+
+    updatePost: (state, action) => {
+      console.log("Updating Post:", action.payload);
       const updatedPosts = state.posts.map((post) => {
-        if (post._id === action.payload.post._id) return action.payload.post;
+        if (post._id === action.payload._id) return action.payload;
         return post;
       });
       state.posts = updatedPosts;
@@ -52,7 +61,15 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost } =
-  authSlice.actions;
+export const {
+  setMode,
+  setLogin,
+  setLogout,
+  setFriends,
+  setAllPosts,
+  updatePost,
+  addPost,
+  getUsers,
+} = authSlice.actions;
 // exporting reducer property as default allows us to use it directly in store config without having to access authSlice
 export default authSlice.reducer;

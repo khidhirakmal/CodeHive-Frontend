@@ -1,17 +1,17 @@
 import axios from "axios";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllPosts, updatePost } from "../stores/authSlice";
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
+  DeleteOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "./tools/FlexBetween";
-import Friend from "./Friend";
-import Container from "./tools/Container";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../stores/authSlice";
+import PostContainer from "./tools/PostContainer";
 
 export default function PostWidget({
   postId,
@@ -23,23 +23,37 @@ export default function PostWidget({
   userPicturePath,
   likes,
   comments,
+  likeCount,
 }) {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
-  // const isLiked = Boolean(likes[loggedInUserId]);
-  // const likeCount = Object.keys(likes).length;
+  const isLiked = likes && likes[loggedInUserId];
+  // const likeCount = likes ? Object.keys(likes).length : 0;
 
   const { palette } = useTheme();
-  const main = palette.neutral.main;
+  const main = palette.text.primary;
   const primary = palette.primary.main;
 
-  const patchLike = async () => {
+  const getPosts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/posts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = response.data;
+      console.log(data);
+      dispatch(setAllPosts({ posts: data }));
+    } catch (err) {
+      console.log("Error retrieving posts:", err);
+    }
+  };
+
+  const handleLike = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:3001/posts/${postId}/like`,
-        JSON.stringify({ userId: loggedInUserId }),
+        `http://localhost:3000/api/posts/${postId}/likeToggle`,
+        JSON.stringify({ postId: postId, userId: loggedInUserId }),
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,22 +63,34 @@ export default function PostWidget({
       );
 
       const updatedPost = response.data;
-      dispatch(setPost({ post: updatedPost }));
+      console.log("Updated post:", updatedPost);
+
+      // Dispatch an action to update the state
+      dispatch(updatePost(updatedPost));
+
+      // Fetch posts again after successful like
+      await getPosts();
     } catch (error) {
-      // Handle the error
       console.error("Error occurred while patching like:", error);
-      // Perform any necessary error handling or display error messages
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      // Make a DELETE request to the backend API's delete endpoint
+      await axios.delete(`http://localhost:3000/api/posts/${postId}`);
+
+      // Update the Redux state by removing the deleted post
+      dispatch(setAllPosts({ posts: { _id: postId } }));
+      // Fetch posts again after successful deletion
+      await getPosts();
+    } catch (error) {
+      console.error("Error occurred while deleting post:", error);
     }
   };
 
   return (
-    <Container m="2rem 0" >
-      {/* <Friend
-        friendId={postUserId}
-        name={name}
-        subtitle={location}
-        userPicturePath={userPicturePath}
-      /> */}
+    <PostContainer>
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
@@ -79,8 +105,9 @@ export default function PostWidget({
       )}
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
-          {/* <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
+          {/* Like Button */}
+          <FlexBetween gap="0.3rem">
+            <IconButton onClick={handleLike}>
               {isLiked ? (
                 <FavoriteOutlined sx={{ color: primary }} />
               ) : (
@@ -89,32 +116,38 @@ export default function PostWidget({
             </IconButton>
             <Typography>{likeCount}</Typography>
           </FlexBetween>
-
-          <FlexBetween gap="0.3rem">
+          {/* Comment Button */}
+          {/* <FlexBetween gap="0.3rem">
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
+            <Typography>{comments ? comments.length : 0}</Typography>
           </FlexBetween> */}
         </FlexBetween>
-
-        <IconButton>
+        {/* Share Button */}
+        {/* <IconButton>
           <ShareOutlined />
+        </IconButton> */}
+        {/* Delete Button */}
+        <IconButton onClick={handleDelete}>
+          <DeleteOutlined />
         </IconButton>
       </FlexBetween>
+      {/* Comment Box */}
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
+          {comments &&
+            comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment}
+                </Typography>
+              </Box>
+            ))}
           <Divider />
         </Box>
       )}
-    </Container>
+    </PostContainer>
   );
 }

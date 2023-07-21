@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "../stores/authSlice";
+import { setAllPosts } from "../stores/authSlice";
 import PostWidget from "./PostWidget";
 
 export default function PostFeed({ userId, isProfile = false }) {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
+  console.log("ProfilePage?", isProfile);
 
   const getPosts = async () => {
     try {
@@ -15,7 +16,8 @@ export default function PostFeed({ userId, isProfile = false }) {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
-      dispatch(setPosts({ posts: data }));
+      console.log("All posts:", data);
+      dispatch(setAllPosts({ posts: data }));
     } catch (err) {
       console.log("Error retrieving posts:", err);
     }
@@ -24,13 +26,14 @@ export default function PostFeed({ userId, isProfile = false }) {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/posts/${userId}/posts`,
+        `http://localhost:3000/api/posts/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       const data = response.data;
-      dispatch(setPosts({ posts: data }));
+      console.log("User's post:", data);
+      dispatch(setAllPosts({ posts: data }));
     } catch (err) {
       console.log("Error retrieving user posts:", err);
     }
@@ -50,39 +53,45 @@ export default function PostFeed({ userId, isProfile = false }) {
     };
 
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isProfile, dispatch, token, userId]);
 
-  console.log("Posts:", posts);
+  console.log("Getting PostFeed:", posts);
 
   return (
     <>
-      {posts.map(
-        ({
-          _id,
-          userId,
-          name,
-          description,
-          location,
-          picturePath,
-          userPicturePath,
-          // likes,
-          // comments,
-        }) => (
-          <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={name}
-            description={description}
-            location={location}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            // likes={likes}
-            // comments={comments}
-          />
-        )
-      )}
+      {Array.isArray(posts[0]) &&
+        posts[0].map(
+          ({
+            _id,
+            userId,
+            name,
+            description,
+            location,
+            picturePath,
+            userPicturePath,
+            likes,
+            comments,
+            likeCount,
+          }) => {
+            // console.log("Description:", description);
+
+            return (
+              <PostWidget
+                key={_id}
+                postId={_id}
+                postUserId={userId}
+                name={name}
+                description={description}
+                location={location}
+                picturePath={picturePath}
+                userPicturePath={userPicturePath}
+                likes={likes}
+                comments={comments}
+                likeCount={likeCount}
+              />
+            );
+          }
+        )}
     </>
   );
 }

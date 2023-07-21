@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "../stores/authSlice";
+import { setAllPosts, addPost } from "../stores/authSlice";
 import Dropzone from "react-dropzone";
 import UserAvatar from "./UserAvatar";
 import FlexBetween from "./tools/FlexBetween";
@@ -31,7 +31,6 @@ and additional attachments. It handles form submission, stores the post
 content and image, and triggers the dispatch of a post creation action. */
 
 export default function PostBox() {
-  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -39,7 +38,6 @@ export default function PostBox() {
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
-  const nonMobile = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
@@ -64,8 +62,9 @@ export default function PostBox() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      const posts = response.data;
-      dispatch(setPosts({ posts }));
+      const posts = await response.data.posts;
+      dispatch(setAllPosts({ posts }));
+      // either use BE to sort or use FE to sort the posts
       setImage(null);
       setPost("");
       console.log("Post successfully created", posts);
@@ -148,7 +147,6 @@ export default function PostBox() {
           </Typography>
         </FlexBetween>
 
-        {/* SUBMIT BUTTON */}
         <Button
           disabled={!post}
           onClick={handlePost}

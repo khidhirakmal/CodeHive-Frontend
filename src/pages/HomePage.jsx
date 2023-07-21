@@ -6,6 +6,7 @@ import PostBox from "../components/PostBox";
 import PostFeed from "../components/PostFeed";
 import UserProjects from "../components/UserProjects";
 import FriendsList from "../components/FriendsList";
+import FriendSuggestion from "components/FriendSuggestion";
 
 /* The HomePage is accessible upon successful authorization. It renders
 User Profile, Posts and Friends List. */
@@ -19,6 +20,7 @@ export default function HomePage() {
 
   return (
     <Box>
+      {/* (TOP SECTION) */}
       <Navbar />
       {/* (LEFT SECTION) UserBox */}
       <Box
@@ -38,8 +40,8 @@ export default function HomePage() {
           mt={nonMobile ? undefined : "2rem"}
         >
           <PostBox picturePath={picturePath} />
-          <Box
-          mt="2rem">
+          <Box mt="2rem">
+            {/* PostFeed having issues */}
             <PostFeed userId={_id} />
           </Box>
         </Box>
@@ -50,6 +52,8 @@ export default function HomePage() {
             <UserProjects />
             <Box m="2rem 0" />
             <FriendsList userId={_id} />
+            <Box m="2rem 0" />
+            <FriendSuggestion />
           </Box>
         )}
       </Box>

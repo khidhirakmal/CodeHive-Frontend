@@ -7,7 +7,7 @@ import FriendsList from "../components/FriendsList"; // FriendsListWidget
 import PostBox from "../components/PostBox"; // MyPostWidget
 import PostFeed from "../components/PostFeed"; // PostsWidget
 import UserBox from "../components/UserBox"; // UserWidget
- 
+
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
@@ -50,7 +50,7 @@ export default function ProfilePage() {
         >
           <PostBox picturePath={user.picturePath} />
           <Box m="2rem 0" />
-          <PostFeed userId={userId} isProfile />
+          <PostFeed userId={userId} isProfile/>
         </Box>
       </Box>
     </Box>
