@@ -4,33 +4,32 @@ import Friend from "./Friend";
 import Container from "./tools/Container";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriends } from "../stores/authSlice";
+import { getUsers } from "../stores/authSlice";
 
-export default function FriendsList({ userId }) {
+export default function FriendSuggestion({ userId }) {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const user = useSelector((state) => state.users);
 
-  const getFriends = async () => {
+  const getAllUsers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${userId}/friends`,
+        `http://localhost:3000/api/users/listUsers`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      // const data = response.data[0].name;
       const data = response.data;
-      dispatch(setFriends({ friends: data }));
-      console.log("Friends Payload:", data);
+      console.log("All Users Payload:", data);
+      dispatch(getUsers({ users: data }));
     } catch (err) {
-      console.log("Error retrieving friends:", err);
+      console.log("Error retrieving users:", err);
     }
   };
 
   useEffect(() => {
-    getFriends();
+    getAllUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,16 +41,16 @@ export default function FriendsList({ userId }) {
         fontWeight="500"
         sx={{ mb: "1.5rem" }}
       >
-        Friend List
+        Suggested Friends
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friends.map((friend) => (
+        {user.map((user) => (
           <Friend
-            key={friend._id}
-            friendId={friend._id}
-            name={`${friend.name}`}
-            subtitle={friend.occupation}
-            userPicturePath={friend.picturePath}
+            key={user._id}
+            friendId={user._id}
+            name={`${user.name}`}
+            subtitle={user.occupation}
+            userPicturePath={user.picturePath}
           />
         ))}
       </Box>
