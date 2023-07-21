@@ -68,7 +68,7 @@ export default function AuthForm() {
       }
     } catch (err) {
       console.log("Error registering user:", err);
-      alert("Email already registered. Please use a different email address.");
+      alert("An error occured. Please try again.");
     }
   };
 
