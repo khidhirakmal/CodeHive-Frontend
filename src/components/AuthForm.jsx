@@ -57,7 +57,7 @@ export default function AuthForm() {
     // console.log("FE Registration Data:", values);
     try {
       const savedUserResponse = await axios.post(
-        "http://localhost:3000/api/users/register",
+        `${process.env.REACT_APP_SERVER_URL}/api/users/register`,
         values
       );
       console.log("Registration successful:", values);
@@ -75,7 +75,7 @@ export default function AuthForm() {
   const login = async (values, onSubmitProps) => {
     try {
       const loggedInResponse = await axios.post(
-        "http://localhost:3000/api/users/login",
+        `${process.env.REACT_APP_SERVER_URL}/api/users/login`,
         values
       );
       const loggedIn = loggedInResponse.data;
