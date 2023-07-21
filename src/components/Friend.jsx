@@ -19,7 +19,6 @@ export default function Friend({ friendId, name, subtitle }) {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-
   const isFriend = friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
@@ -35,6 +34,7 @@ export default function Friend({ friendId, name, subtitle }) {
         }
       );
       const data = response.data;
+      console.log("Patching Friend:", data);
       dispatch(setFriends({ friends: data }));
     } catch (err) {
       console.log("Error patching friend:", err);

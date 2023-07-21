@@ -36,7 +36,7 @@ export default function PostBox() {
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
-  const { _id } = useSelector((state) => state.user);
+  const { _id, name } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -44,6 +44,7 @@ export default function PostBox() {
   const handlePost = async () => {
     const payload = {
       userId: _id,
+      name: name,
       description: post,
     };
 

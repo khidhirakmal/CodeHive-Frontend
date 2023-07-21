@@ -55,7 +55,7 @@ export default function PostFeed({ userId, isProfile = false }) {
     fetchData();
   }, [isProfile, dispatch, token, userId]);
 
-  console.log("Getting PostFeed:", posts);
+  console.log("Getting PostFeed:", posts[0]);
 
   return (
     <>
@@ -66,15 +66,12 @@ export default function PostFeed({ userId, isProfile = false }) {
             userId,
             name,
             description,
-            location,
-            picturePath,
-            userPicturePath,
             likes,
             comments,
             likeCount,
+            picturePath,
+            // userPicturePath,
           }) => {
-            // console.log("Description:", description);
-
             return (
               <PostWidget
                 key={_id}
@@ -82,12 +79,11 @@ export default function PostFeed({ userId, isProfile = false }) {
                 postUserId={userId}
                 name={name}
                 description={description}
-                location={location}
-                picturePath={picturePath}
-                userPicturePath={userPicturePath}
                 likes={likes}
                 comments={comments}
                 likeCount={likeCount}
+                picturePath={picturePath}
+                // userPicturePath={userPicturePath}
               />
             );
           }
