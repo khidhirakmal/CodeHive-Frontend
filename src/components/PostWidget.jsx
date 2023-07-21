@@ -12,15 +12,15 @@ import {
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import FlexBetween from "./tools/FlexBetween";
 import PostContainer from "./tools/PostContainer";
+import UserAvatar from "./UserAvatar";
+import { Link } from "react-router-dom";
 
 export default function PostWidget({
   postId,
   postUserId,
   name,
   description,
-  location,
   picturePath,
-  userPicturePath,
   likes,
   comments,
   likeCount,
@@ -30,7 +30,6 @@ export default function PostWidget({
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = likes && likes[loggedInUserId];
-  // const likeCount = likes ? Object.keys(likes).length : 0;
 
   const { palette } = useTheme();
   const main = palette.text.primary;
@@ -89,11 +88,20 @@ export default function PostWidget({
     }
   };
 
+  console.log("name:", toString(name));
   return (
     <PostContainer>
+      {/* Profile Picture */}
+      <Link to={`/profile/${postUserId}`}>
+        <UserAvatar username={postUserId} />
+      </Link>
+      <Typography variant="h6" color={main} sx={{ mt: "1rem" }}>
+        {name}
+      </Typography>
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
       </Typography>
+      {/* Uploaded Photo */}
       {picturePath && (
         <img
           width="100%"
@@ -117,12 +125,12 @@ export default function PostWidget({
             <Typography>{likeCount}</Typography>
           </FlexBetween>
           {/* Comment Button */}
-          {/* <FlexBetween gap="0.3rem">
+          <FlexBetween gap="0.3rem">
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments ? comments.length : 0}</Typography>
-          </FlexBetween> */}
+          </FlexBetween>
         </FlexBetween>
         {/* Share Button */}
         {/* <IconButton>

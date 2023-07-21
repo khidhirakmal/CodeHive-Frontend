@@ -6,11 +6,22 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../stores/authSlice";
 
+// Shuffle Users //
+function shuffleUsers(usersArray) {
+  let shuffledUsers = [...usersArray]; // This creates a copy of the array
+  for (let currentIndex = shuffledUsers.length - 1; currentIndex > 0; currentIndex--) {
+    const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+    [shuffledUsers[currentIndex], shuffledUsers[randomIndex]] = [shuffledUsers[randomIndex], shuffledUsers[currentIndex]];
+  }
+  return shuffledUsers;
+}
+
 export default function FriendSuggestion({ userId }) {
   const dispatch = useDispatch();
   const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const user = useSelector((state) => state.users);
+  const currentUser = useSelector((state) => state.user._id);
 
   const getAllUsers = async () => {
     try {
@@ -44,15 +55,18 @@ export default function FriendSuggestion({ userId }) {
         Suggested Friends
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {user.map((user) => (
-          <Friend
-            key={user._id}
-            friendId={user._id}
-            name={`${user.name}`}
-            subtitle={user.occupation}
-            userPicturePath={user.picturePath}
-          />
-        ))}
+        {shuffleUsers(user)
+          .filter((user) => user._id !== currentUser)
+          .slice(0, 3)
+          .map((user) => (
+            <Friend
+              key={user._id}
+              friendId={user._id}
+              name={`${user.name}`}
+              subtitle={user.occupation}
+              userPicturePath={user.picturePath}
+            />
+          ))}
       </Box>
     </Container>
   );

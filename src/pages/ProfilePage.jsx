@@ -7,12 +7,14 @@ import FriendsList from "../components/FriendsList"; // FriendsListWidget
 import PostBox from "../components/PostBox"; // MyPostWidget
 import PostFeed from "../components/PostFeed"; // PostsWidget
 import UserBox from "../components/UserBox"; // UserWidget
+import UserProjects from "components/UserProjects";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const token = useSelector((state) => state.token);
   const nonMobile = useMediaQuery("(min-width:1000px)");
+  const loggedInUserId = useSelector((state) => state.user._id);
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
@@ -48,10 +50,18 @@ export default function ProfilePage() {
           flexBasis={nonMobile ? "42%" : undefined}
           mt={nonMobile ? undefined : "2rem"}
         >
-          <PostBox picturePath={user.picturePath} />
-          <Box m="2rem 0" />
-          <PostFeed userId={userId} isProfile/>
+          {userId === loggedInUserId && (
+            <PostBox picturePath={user.picturePath} />
+          )}
+          <PostFeed isProfile userId={userId} picturePath={user.picturePath} />
         </Box>
+        {/* (RIGHT SECTION) UserProjects */}
+        {nonMobile && (
+          <Box flexBasis="26%">
+            <UserProjects />
+            <Box m="2rem 0" />
+          </Box>
+        )}
       </Box>
     </Box>
   );

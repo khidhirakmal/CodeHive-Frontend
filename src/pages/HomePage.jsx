@@ -31,7 +31,7 @@ export default function HomePage() {
         justifyContent="space-between"
       >
         <Box flexBasis={nonMobile ? "26%" : undefined}>
-          <UserBox userId={_id} picturePath={picturePath} />
+          <UserBox userId={_id}  />
         </Box>
 
         {/* (MID SECTION) Posts Section - PostBox and PostFeed */}
@@ -39,7 +39,7 @@ export default function HomePage() {
           flexBasis={nonMobile ? "42%" : undefined}
           mt={nonMobile ? undefined : "2rem"}
         >
-          <PostBox picturePath={picturePath} />
+          <PostBox  />
           <Box mt="2rem">
             {/* PostFeed having issues */}
             <PostFeed userId={_id} />
@@ -49,8 +49,8 @@ export default function HomePage() {
         {/* (RIGHT SECTION) UserProjects and FriendsList */}
         {nonMobile && (
           <Box flexBasis="26%">
-            <UserProjects />
-            <Box m="2rem 0" />
+            {/* <UserProjects /> */}
+            {/* <Box m="2rem 0" /> */}
             <FriendsList userId={_id} />
             <Box m="2rem 0" />
             <FriendSuggestion />
