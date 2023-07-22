@@ -47,7 +47,7 @@ export default function Friend({ friendId, name, subtitle }) {
         <UserAvatar username={friendId} />
         <Box
           onClick={() => {
-            navigate(`/profile/${friendId}`);
+            navigate(`${process.env.REACT_APP_SERVER_URL}/profile/${friendId}`);
             navigate(0);
           }}
         >
