@@ -9,7 +9,7 @@ import { getUsers } from "../stores/authSlice";
 // Shuffle Users //
 function shuffleUsers(usersArray) {
   let shuffledUsers = [...usersArray]; // This creates a copy of the array
-  for (let currentIndex = shuffledUsers.length - 1; currentIndex > 0; currentIndex--) {
+  for (let currentIndex = shuffledUsers.length - 1; currentIndex >= 0; currentIndex--) {
     const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
     [shuffledUsers[currentIndex], shuffledUsers[randomIndex]] = [shuffledUsers[randomIndex], shuffledUsers[currentIndex]];
   }
