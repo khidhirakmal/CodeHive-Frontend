@@ -53,7 +53,7 @@ export default function HomePage() {
             {/* <Box m="2rem 0" /> */}
             <FriendsList userId={_id} />
             <Box m="2rem 0" />
-            {/* <FriendSuggestion /> */}
+            <FriendSuggestion />
           </Box>
         )}
       </Box>
