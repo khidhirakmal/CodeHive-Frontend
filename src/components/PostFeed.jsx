@@ -12,7 +12,7 @@ export default function PostFeed({ userId, isProfile = false }) {
 
   const getPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/posts", {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/posts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
@@ -26,7 +26,7 @@ export default function PostFeed({ userId, isProfile = false }) {
   const getUserPosts = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/posts/${userId}`,
+        `${process.env.REACT_APP_SERVER_URL}/api/posts/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

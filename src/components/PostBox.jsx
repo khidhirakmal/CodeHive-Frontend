@@ -57,7 +57,7 @@ export default function PostBox() {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/posts/`,
+        `${process.env.REACT_APP_SERVER_URL}/api/posts/`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },

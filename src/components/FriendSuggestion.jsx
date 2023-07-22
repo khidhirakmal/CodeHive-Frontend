@@ -26,7 +26,7 @@ export default function FriendSuggestion({ userId }) {
   const getAllUsers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/listUsers`,
+        `${process.env.REACT_APP_SERVER_URL}/api/users/listUsers`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
