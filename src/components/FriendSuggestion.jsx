@@ -55,7 +55,7 @@ export default function FriendSuggestion({ userId }) {
         Suggested Friends
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {shuffleUsers(user)
+        {user && shuffleUsers(user)
           .filter((user) => user._id !== currentUser)
           .slice(0, 3)
           .map((user) => (
