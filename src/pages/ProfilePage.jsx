@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const loggedInUserId = useSelector((state) => state.user._id);
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

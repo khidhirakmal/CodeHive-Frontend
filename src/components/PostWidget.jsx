@@ -37,7 +37,7 @@ export default function PostWidget({
 
   const getPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/posts", {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/posts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data;
@@ -51,7 +51,7 @@ export default function PostWidget({
   const handleLike = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/posts/${postId}/likeToggle`,
+        `${process.env.REACT_APP_SERVER_URL}/api/posts/${postId}/likeToggle`,
         JSON.stringify({ postId: postId, userId: loggedInUserId }),
         {
           headers: {
@@ -77,7 +77,7 @@ export default function PostWidget({
   const handleDelete = async () => {
     try {
       // Make a DELETE request to the backend API's delete endpoint
-      await axios.delete(`http://localhost:3000/api/posts/${postId}`);
+      await axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/posts/${postId}`);
 
       // Update the Redux state by removing the deleted post
       dispatch(setAllPosts({ posts: { _id: postId } }));
@@ -108,7 +108,7 @@ export default function PostWidget({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:3000/api/posts/${picturePath}`}
+          src={`${process.env.REACT_APP_SERVER_URL}/api/posts/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">

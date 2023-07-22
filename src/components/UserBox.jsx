@@ -32,7 +32,7 @@ export default function UserBox({ userId }) {
   const getUser = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/users/${userId}`,
+        `${process.env.REACT_APP_SERVER_URL}/api/users/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
