@@ -1,4 +1,4 @@
-# CodeHive - https://codehive.onrender.com/
+# [CodeHive](https://codehive.onrender.com/)
 
 ## Table of contents
 - [Introduction](#introduction)
