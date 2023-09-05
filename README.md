@@ -1,4 +1,4 @@
-# CodeHive - A social platform for buzzing developers
+# CodeHive - [A social platform for buzzing developers](https://codehive.onrender.com/)
 
 ## Table of contents
 - [Introduction](#introduction)
